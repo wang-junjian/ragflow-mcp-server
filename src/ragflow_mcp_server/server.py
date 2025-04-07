@@ -145,7 +145,6 @@ async def serve() -> Server:
                 result = {
                     "session_id": session_id,
                     "chat_id": assistant.id,
-                    "dataset_id": dataset_id,
                     "name": chat_name
                 }
                 

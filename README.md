@@ -1,28 +1,35 @@
-# ragflow-mcp-server MCP server
+# RAGFlow MCP Server
 
-RAGFlow MCP Server - A Model Context Protocol server integrating with RAGFlow APIs
+RAGFlow API MCP Server，可以查找知识库和聊天。
+
+下载 MCP 开发文档和 RAGFlow API 参考：
+
+```bash
+wget https://modelcontextprotocol.io/llms-full.txt -O docs/mcp-llms-full.txt
+wget https://github.com/infiniflow/ragflow/raw/refs/heads/main/docs/references/python_api_reference.md -O docs/ragflow-python_api_reference.md
+```
 
 ## Components
 
-### Resources
-
-The server implements a simple note storage system with:
-- Custom note:// URI scheme for accessing individual notes
-- Each note resource has a name, description and text/plain mimetype
-
-### Prompts
-
-The server provides a single prompt:
-- summarize-notes: Creates summaries of all stored notes
-  - Optional "style" argument to control detail level (brief/detailed)
-  - Generates prompt combining all current notes with style preference
-
 ### Tools
+  
+1. list_datasets
+    - 列出所有数据集
+    - 返回数据集的 ID 和名称
 
-The server implements one tool:
-- add-note: Adds a new note to the server
-  - Takes "name" and "content" as required string arguments
-  - Updates server state and notifies clients of resource changes
+2. create_chat
+    - 创建一个新的聊天助手
+    - 输入：
+      - name: 聊天助手的名称
+      - dataset_id: 数据集的 ID
+    - 返回创建的聊天助手的 ID、名称和会话 ID
+
+3. chat
+    - 与聊天助手进行对话
+    - 输入：
+      - session_id: 聊天助手的会话 ID
+      - question: 提问内容
+    - 返回聊天助手的回答
 
 ## Configuration
 
@@ -109,9 +116,3 @@ npx @modelcontextprotocol/inspector uv --directory /Users/junjian/GitHub/wang-ju
 
 
 Upon launching, the Inspector will display a URL that you can access in your browser to begin debugging.
-
-
-```bash
-wget https://modelcontextprotocol.io/llms-full.txt -O docs/mcp-llms-full.txt
-wget https://github.com/infiniflow/ragflow/raw/refs/heads/main/docs/references/python_api_reference.md -O docs/ragflow-python_api_reference.md
-```
