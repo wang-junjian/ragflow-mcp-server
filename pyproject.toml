@@ -1,0 +1,21 @@
+[project]
+name = "ragflow-mcp-server"
+version = "0.1.0"
+description = "RAGFlow MCP Server - A Model Context Protocol server integrating with RAGFlow APIs"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+ "mcp>=1.6.0",
+ "python-dotenv>=1.1.0",
+ "ragflow-sdk>=0.17.2",
+]
+[[project.authors]]
+name = "军舰"
+email = "wang-junjian@qq.com"
+
+[build-system]
+requires = [ "hatchling",]
+build-backend = "hatchling.build"
+
+[project.scripts]
+ragflow-mcp-server = "ragflow_mcp_server:main"
