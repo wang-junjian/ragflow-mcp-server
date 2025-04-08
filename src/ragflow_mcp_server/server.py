@@ -171,7 +171,7 @@ async def serve() -> Server:
                 
                 response = ""
                 for ans in session.ask(question, stream=True):
-                    response += ans.content
+                    response = ans.content
                 
                 if not response:
                     return [types.TextContent(text="Error: 未收到任何响应")]
