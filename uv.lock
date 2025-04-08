@@ -589,6 +589,7 @@ name = "ragflow-mcp-server"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [
+    { name = "click" },
     { name = "mcp" },
     { name = "python-dotenv" },
     { name = "ragflow-sdk" },
@@ -596,6 +597,7 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [
+    { name = "click", specifier = ">=8.1.8" },
     { name = "mcp", specifier = ">=1.6.0" },
     { name = "python-dotenv", specifier = ">=1.1.0" },
     { name = "ragflow-sdk", specifier = ">=0.17.2" },

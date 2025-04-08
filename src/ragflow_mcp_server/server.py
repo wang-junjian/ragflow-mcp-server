@@ -1,6 +1,8 @@
 import os
 import logging
 import json
+import click
+import asyncio
 from typing import Optional, Dict, Any
 from mcp.server.models import InitializationOptions
 import mcp.types as types
@@ -19,13 +21,13 @@ ragflow: Optional[RAGFlow] = None
 active_sessions: Dict[str, Any] = {}
 
 
-async def initialize_server():
+async def initialize_server(api_key:str, base_url: str):
     """初始化 RAGFlow MCP 服务器"""
     global ragflow
     load_dotenv()
 
-    api_key = os.getenv("RAGFLOW_API_KEY")
-    base_url = os.getenv("RAGFLOW_BASE_URL")
+    api_key = api_key or os.getenv("RAGFLOW_API_KEY")
+    base_url = base_url or os.getenv("RAGFLOW_BASE_URL")
 
     if not api_key or not base_url:
         raise ValueError("RAGFLOW_API_KEY and RAGFLOW_BASE_URL environment variables must be set")
@@ -186,21 +188,55 @@ async def serve() -> Server:
 
     return server
 
+# def main(auth_token: str):
+#     async def _run():
+#         async with mcp.server.stdio.stdio_server() as (read_stream, write_stream):
+#             server = await serve(auth_token)
+#             await server.run(
+#                 read_stream,
+#                 write_stream,
+#                 InitializationOptions(
+#                     server_name="sentry",
+#                     server_version="0.4.1",
+#                     capabilities=server.get_capabilities(
+#                         notification_options=NotificationOptions(),
+#                         experimental_capabilities={},
+#                     ),
+#                 ),
+#             )
 
-async def main():
-    await initialize_server()
-    
-    async with mcp.server.stdio.stdio_server() as (read_stream, write_stream):
-        mcp_server = await serve()
-        await mcp_server.run(
-            read_stream,
-            write_stream,
-            InitializationOptions(
-                server_name="ragflow-mcp-server",
-                server_version="0.1.0",
-                capabilities=mcp_server.get_capabilities(
-                    notification_options=NotificationOptions(),
-                    experimental_capabilities={},
+#     asyncio.run(_run())
+
+@click.command()
+@click.option(
+    "--api-key",
+    envvar="RAGFLOW_API_KEY",
+    required=True,
+    help="RAGFlow API key"
+)
+@click.option(
+    "--base-url",
+    envvar="RAGFLOW_BASE_URL",
+    required=True,
+    help="RAGFlow base URL"
+)
+def main(api_key: str, base_url: str):
+    async def _run():
+        await initialize_server(api_key, base_url)
+        
+        async with mcp.server.stdio.stdio_server() as (read_stream, write_stream):
+            server = await serve()
+            await server.run(
+                read_stream,
+                write_stream,
+                InitializationOptions(
+                    server_name="ragflow-mcp-server",
+                    server_version="0.1.0",
+                    capabilities=server.get_capabilities(
+                        notification_options=NotificationOptions(),
+                        experimental_capabilities={},
+                    ),
                 ),
-            ),
-        )
+            )
+
+    asyncio.run(_run())
