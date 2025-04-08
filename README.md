@@ -39,6 +39,41 @@ wget https://github.com/infiniflow/ragflow/raw/refs/heads/main/docs/references/p
 
 ### Install
 
+#### GitHub Copilot
+
+.vscode/mcp.json
+
+```json
+{
+    "servers": {
+        "ragflow-mcp-server": {
+            "command": "uvx",
+            "args": [
+                "ragflow-mcp-server",
+                "--api-key=ragflow-dhMzViYzJlMTM1NjExZjBiNWU5MDI0Mm",
+                "--base-url=http://172.16.33.66:8060"
+            ]
+        }
+    }
+}
+```
+
+#### Continue
+
+config.yaml
+
+```yaml
+mcpServers:
+  - name: RAGFlow Server
+    command: uvx
+    args:
+      - ragflow-mcp-server
+      - --api-key
+      - ragflow-dhMzViYzJlMTM1NjExZjBiNWU5MDI0Mm
+      - --base-url
+      - http://172.16.33.66:8060
+```
+
 #### Claude Desktop
 
 On MacOS: `~/Library/Application\ Support/Claude/claude_desktop_config.json`
@@ -111,8 +146,11 @@ experience, we strongly recommend using the [MCP Inspector](https://github.com/m
 You can launch the MCP Inspector via [`npm`](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) with this command:
 
 ```bash
-npx @modelcontextprotocol/inspector uv --directory /Users/junjian/GitHub/wang-junjian/ragflow-mcp-server run ragflow-mcp-server
+npx @modelcontextprotocol/inspector \
+  uv --directory /Users/junjian/GitHub/wang-junjian/ragflow-mcp-server \
+  run ragflow-mcp-server \
+  --api-key ragflow-dhMzViYzJlMTM1NjExZjBiNWU5MDI0Mm \
+  --base-url http://172.16.33.66:8060
 ```
-
 
 Upon launching, the Inspector will display a URL that you can access in your browser to begin debugging.
